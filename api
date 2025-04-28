@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inspiration Hub</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header, footer {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 1em 0;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2em;
+    }
+
+    #quote-box {
+      background-color: #fff;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      text-align: center;
+    }
+
+    #quote {
+      font-size: 1.5em;
+      margin-bottom: 1em;
+      color: #333;
+    }
+
+    #author {
+      font-size: 1.2em;
+      margin-bottom: 1.5em;
+      color: #555;
+    }
+
+    #new-quote {
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #new-quote:hover {
+      background-color: #45a049;
+    }
+
+    @media (max-width: 600px) {
+      #quote-box {
+        padding: 1.5em;
+      }
+
+      #quote {
+        font-size: 1.2em;
+      }
+
+      #author {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Inspiration Hub</h1>
+    <p>Discover a new quote every time you visit</p>
+  </header>
+
+  <main>
+    <div id="quote-box">
+      <div id="quote">Loading quote...</div>
+      <div id="author"></div>
+      <button id="new-quote">New Quote</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Inspiration Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    async function fetchQuote() {
+      try {
+        const response = await fetch('https://api.quotable.io/random');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        document.getElementById('quote').textContent = `"${data.content}"`;
+        document.getElementById('author').textContent = `— ${data.author}`;
+      } catch (error) {
+        document.getElementById('quote').textContent = "Oops! Couldn't fetch a quote right now.";
+        document.getElementById('author').textContent = '';
+        console.error('Fetch error:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchQuote();
+      document.getElementById('new-quote').addEventListener('click', fetchQuote);
+    });
+  </script>
+</body>
+</html>
